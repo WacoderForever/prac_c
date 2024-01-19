@@ -8,3 +8,4 @@
 #include <string.h>
 #include <ctype.h>
 #include <gsl/gsl_rng.h>
+#include <limits.h>
