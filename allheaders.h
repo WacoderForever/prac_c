@@ -9,3 +9,5 @@
 #include <ctype.h>
 #include <gsl/gsl_rng.h>
 #include <limits.h>
+#include <stdalign.h>
+#include <stdbool.h>
