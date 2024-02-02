@@ -28,6 +28,44 @@ char *encode(char *plaintext, int key) {
     return ciphertext;
 }
 
+
+char *decode(char *ciphertext,int key){
+    int i=0;
+    char *plaintext=(char*)malloc(strlen(ciphertext)+1); //includeing the null terminator
+
+    if(plaintext==NULL){
+        perror("Failed to allocate memory for plaintext");
+        exit(1);
+    }
+
+    while(ciphertext[i] != '\0'){
+        char c=tolower(ciphertext[i]);
+
+        if(c >= 'a' && c<='z'){
+
+            int shiftedPosition=((c-'a')-key)%26;
+            if(shiftedPosition<0){
+                plaintext[i]='z';
+            }
+            else{
+            plaintext[i]='a'+shiftedPosition;
+            }
+
+        }
+        else{
+
+            plaintext[i]=ciphertext[i];
+
+        }
+        i++;
+
+    }
+
+    plaintext[i]='\0';
+
+    return plaintext;
+}
+
 int main() {
     char *text;
     int size = 1; 
@@ -59,12 +97,16 @@ int main() {
     scanf("%d", &key);
 
     char *cipher = encode(text, key);
+    char *plain=decode(cipher,key);
+
     printf("The text is: %s\n", text);
     printf("The cipher form is: %s\n", cipher);
+    printf("The plain text is : %s\n",plain);
 
 
     // free text and cipher
     free(text);
     free(cipher);
+    free(plain);
     return 0;
 }
