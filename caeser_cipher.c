@@ -45,7 +45,7 @@ char *decode(char *ciphertext,int key){
 
             int shiftedPosition=((c-'a')-key)%26;
             if(shiftedPosition<0){
-                plaintext[i]='z';
+                plaintext[i]='z'+shiftedPosition+1;
             }
             else{
             plaintext[i]='a'+shiftedPosition;

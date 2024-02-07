@@ -16,8 +16,8 @@ char *encode(char *plaintext, char *key) {
     for (int i = 0; plaintext[i] != '\0'; i++) {
 
         if (isalpha(plaintext[i])) { // Check if the character is alphabetic
-            char base = islower(plaintext[i]) ? 'a' : 'A';
-            char keyBase = islower(key[keyIndex]) ? 'a' : 'A';
+            char base = islower(plaintext[i]) ? 'a' : 'a';
+            char keyBase = islower(key[keyIndex]) ? 'a' : 'a';
             // Adjust for upper/lower case in plaintext and key
             ciphertext[i] = base + (tolower(plaintext[i]) - base + tolower(key[keyIndex]) - keyBase) % 26;
             keyIndex = (keyIndex + 1) % keyLength; // Move to the next key character
@@ -45,11 +45,12 @@ char *decode(char *ciphertext, char *key) {
     int keyLength = strlen(key);
     int keyIndex = 0; // Use keyIndex to cycle through key characters
 
+
     for (int i = 0; ciphertext[i] != '\0'; i++) {
 
         if (isalpha(ciphertext[i])) { // Check if the character is alphabetic
-            char base = islower(ciphertext[i]) ? 'a' : 'A';
-            char keyBase = islower(key[keyIndex]) ? 'a' : 'A';
+            char base = islower(ciphertext[i]) ? 'a' : 'a';
+            char keyBase = islower(key[keyIndex]) ? 'a' : 'a';
             // Adjust for upper/lower case in ciphertext and key, and perform the reverse operation
             int shift = tolower(key[keyIndex]) - keyBase;
             int originalPosition = tolower(ciphertext[i]) - base - shift;
