@@ -298,7 +298,6 @@ char *encode(char matrix[MATRIX_ROW][MATRIX_COLUMN],char *text){
             exit(1);
         }
 
-        text=new;
         text[length]='x';
         text[length+1]='\0';
 
@@ -411,10 +410,11 @@ int main(){
 
     char *ciphertext=encode(matrix,text);
 
-    printf("The ciphertext is :%s\n",ciphertext);
+    printf("The ciphertext is : %s\n",ciphertext);
 
     free(ciphertext);
     free(matrix_el);
     free(fkey);
+    
     return 0;
 }
