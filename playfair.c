@@ -298,6 +298,7 @@ char *encode(char matrix[MATRIX_ROW][MATRIX_COLUMN],char *text){
             exit(1);
         }
 
+        text=new;
         text[length]='x';
         text[length+1]='\0';
 
