@@ -30,7 +30,7 @@ void towers(int num, char frompeg, char topeg, char auxpeg)
 
 {
 
-    // Base Condition if no of disks are
+    // Base Condition if no of disks is one
 
     if (num == 1)
 
@@ -50,6 +50,6 @@ void towers(int num, char frompeg, char topeg, char auxpeg)
 
     printf("\n Move disk %d from peg %c to peg %c", num, frompeg, topeg);
 
-    towers(num - 1, auxpeg, topeg, frompeg); //mving n-1 disks to topeg
+    towers(num - 1, auxpeg, topeg, frompeg); //moving n-1 disks to topeg
 
 }
