@@ -284,24 +284,6 @@ char *encode(char matrix[MATRIX_ROW][MATRIX_COLUMN],char *text){
 
     int i=0;
     long int length=strlen(text);
-    
-
-    if(length % 2 != 0){
-
-        length++;
-
-        char *new=(char*)realloc(text,length*sizeof(char));
-
-        if (new == NULL) {
-
-            perror("Failed to reallocate memory");
-            exit(1);
-        }
-
-        text[length]='x';
-        text[length+1]='\0';
-
-    }
 
     char *ciphertext=(char*)malloc(length+1);
 
@@ -309,6 +291,11 @@ char *encode(char matrix[MATRIX_ROW][MATRIX_COLUMN],char *text){
 
         char fchar=text[i];
         char schar=text[i+1];
+
+        if(schar=='\0'){
+
+            schar='x';
+        }
 
         if((same_row(matrix,fchar,schar))==1){
 
@@ -347,8 +334,6 @@ char *encode(char matrix[MATRIX_ROW][MATRIX_COLUMN],char *text){
             }
 
         }
-
-       
 
 
         i+=2;
