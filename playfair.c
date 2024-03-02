@@ -102,6 +102,18 @@ char same_row_encoding(char matrix[MATRIX_ROW][MATRIX_COLUMN],char c){
 
 }
 
+char same_row_decoding(char matrix[MATRIX_ROW][MATRIX_COLUMN],char c){
+
+    int row=get_row(matrix,c);
+    char result;
+    int column=get_column(matrix,c);
+
+    column=(int)((column+4)%5);
+    result=matrix[row][column];
+
+    return result;
+}
+
 int same_column(char matrix[MATRIX_ROW][MATRIX_COLUMN],char fchar,char schar){
 
     int column;
@@ -146,6 +158,19 @@ char same_column_encoding(char matrix[MATRIX_ROW][MATRIX_COLUMN], char c){
     int row=get_row(matrix,c);
 
     row=(int)(row+1)%5;
+    result=matrix[row][column];
+
+    return result;
+
+}
+
+char same_column_decoding(char matrix[MATRIX_ROW][MATRIX_COLUMN], char c){
+
+    char result;
+    int column=get_column(matrix,c);
+    int row=get_row(matrix,c);
+
+    row=(int)(row+4)%5;
     result=matrix[row][column];
 
     return result;
@@ -283,12 +308,19 @@ char *matrix_elements(char *key){
 char *encode(char matrix[MATRIX_ROW][MATRIX_COLUMN],char *text){
 
     int i=0;
-    long int length=strlen(text);
+    int k=0;
+    long int length=strlen(text+1);
+    char *ciphertext=(char*)calloc(length+1,sizeof(char));
 
-    char *ciphertext=(char*)malloc(length+1);
+    if(ciphertext==NULL){
+
+        perror("no room for cipher");
+        exit(1);
+    }
 
     while(text[i] != '\0'){
 
+        int incr=2;
         char fchar=text[i];
         char schar=text[i+1];
 
@@ -296,16 +328,31 @@ char *encode(char matrix[MATRIX_ROW][MATRIX_COLUMN],char *text){
 
             schar='x';
         }
+        
+
+        if(schar==fchar){
+
+            schar='x';
+            ++length;
+
+            char *new=(char*)realloc(ciphertext,length*sizeof(char));
+
+            if(new==NULL){
+
+                free(ciphertext);
+                perror("Memory allocation failed");
+                exit(1);
+
+            }
+
+            incr=1;
+
+        }
 
         if((same_row(matrix,fchar,schar))==1){
 
-            char temp1=same_row_encoding(matrix,fchar);
-
-            ciphertext[i]=temp1;
-
-            char temp2=same_row_encoding(matrix,schar);
-
-            ciphertext[i+1]=temp2;
+            ciphertext[k]=same_row_encoding(matrix,fchar);
+            ciphertext[k+1]=same_row_encoding(matrix,schar);
 
         }
 
@@ -313,36 +360,77 @@ char *encode(char matrix[MATRIX_ROW][MATRIX_COLUMN],char *text){
 
             if((same_column(matrix,fchar,schar))==1){
 
-                char temp1=same_column_encoding(matrix,fchar);
+                ciphertext[k]=same_column_encoding(matrix,fchar);
+                ciphertext[k+1]=same_column_encoding(matrix,schar);
 
-                ciphertext[i]=temp1;
-
-                char temp2=same_column_encoding(matrix,schar);
-
-                ciphertext[i+1]=temp2;
             }
 
              else{
 
-                char temp1=rectangular_encoding(matrix,fchar,schar);
+                ciphertext[k]=rectangular_encoding(matrix,fchar,schar);
+                ciphertext[k+1]=rectangular_encoding(matrix,schar,fchar);
 
-                ciphertext[i]=temp1;
-
-                char temp2=rectangular_encoding(matrix,schar,fchar);
-
-                ciphertext[i+1]=temp2;
             }
 
         }
 
-
-        i+=2;
+        k+=2;
+        i+=incr;
     }
 
-    ciphertext[i]=='\0';
+    ciphertext[k-1]=='\0';
 
     return ciphertext;
 
+}
+
+char *decode(char matrix[MATRIX_ROW][MATRIX_COLUMN],char *text){
+
+    char *plaintext=(char*)malloc((strlen(text)+1)*sizeof(char));
+    int i=0;
+    int incr=2;
+
+    if(plaintext==NULL){
+
+        perror("Plaintext not assigned memory.");
+        exit(1);
+    }
+
+    while(text[i] != '\0'){
+
+        char fchar=text[i];
+        char schar=text[i+1];
+
+        if((same_row(matrix,fchar,schar))==1){
+
+            plaintext[i]=same_row_decoding(matrix,fchar);
+            plaintext[i+1]=same_row_decoding(matrix,schar);
+
+        }
+
+        else{
+
+            if((same_column(matrix,fchar,schar))==1){
+
+                plaintext[i]=same_column_decoding(matrix,fchar);
+                plaintext[i+1]=same_column_decoding(matrix,schar);
+
+            }
+
+            else{
+
+                plaintext[i]=rectangular_encoding(matrix,fchar,schar);
+                plaintext[i+1]=rectangular_encoding(matrix,schar,fchar);
+
+            }
+        }
+
+        i+=incr;
+    }
+
+    plaintext[i]='\0';
+
+    return plaintext;
 }
 
 int main(){
@@ -394,10 +482,13 @@ int main(){
     printf("\n");
 
     char *ciphertext=encode(matrix,text);
+    char *plaintext=decode(matrix,ciphertext);
 
     printf("The ciphertext is : %s\n",ciphertext);
+    printf("The plaintext is: %s\n",plaintext);
 
     free(ciphertext);
+    free(plaintext);
     free(matrix_el);
     free(fkey);
     
