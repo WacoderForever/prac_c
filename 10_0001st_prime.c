@@ -11,6 +11,11 @@ int prime(int num){
             ++count;
         }
 
+        if(count>1){
+
+            break;
+        }
+
         ++div;
     }
 
