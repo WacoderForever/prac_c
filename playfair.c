@@ -248,10 +248,11 @@ char *make_key(char *key){
             if(new==NULL){
 
                 free(final_key);
+                final_key=NULL;
                 perror("Memory not allocated for new text");
                 exit(1);
             }
-
+            final_key=new; //update final key
             final_key[size-1]=key[i];
             
         }
@@ -340,11 +341,13 @@ char *encode(char matrix[MATRIX_ROW][MATRIX_COLUMN],char *text){
             if(new==NULL){
 
                 free(ciphertext);
+                ciphertext=NULL;
                 perror("Memory allocation failed");
                 exit(1);
 
             }
 
+            ciphertext=new; //update ciphertext pointer
             incr=1;
 
         }
