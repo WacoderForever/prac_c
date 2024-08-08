@@ -9,11 +9,11 @@ int main(){
     int low,high,mid;
     low=0;
     high=9;
-    mid=(low+high)/2;
+    mid=(int)(low+high)/2;
     while((n!=a[mid])&&(low<=high)){
         if(a[mid]>n){
             high=mid-1;
-            mid=(low+high)/2;
+            mid=(int)(low+high)/2;
             for(int i=low;i<high;i++){
                 printf("%d ",a[i]);
             }
@@ -27,13 +27,13 @@ int main(){
             }
             puts("");
         }
-        else{
         if(a[mid]==n){
-            printf("%d is in the array",n);
+            printf("%d is in the array\n",n);
+            break;
         }
         else{
-            printf("%d is not in the array",n);
-        }
+            printf("%d is not in the array\n",n);
+            break;
         }
        
     }
