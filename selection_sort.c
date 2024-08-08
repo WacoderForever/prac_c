@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 int main(){
-    int A[]={43,67,12,34,90,87,99};
+    int A[]={43,67,12,34,9032,6789876};
     int size=sizeof(A)/4;
     int B[size];
     int smallest=A[0];
