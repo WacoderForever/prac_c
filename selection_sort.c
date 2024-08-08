@@ -23,5 +23,5 @@ int main(){
     for(int j=0;j<size;j++){
         printf("%d ",A[j]);
     }
-
+    printf("\n");
 }
