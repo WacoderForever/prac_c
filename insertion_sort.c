@@ -5,26 +5,16 @@ int main(){
     int A[]={8,5,78,90,2,45,67};
     int size=sizeof(A)/2;
     int B[size];
+    B[0]=A[0];
     int count=0;
     while(count<size){
-        for(int i=0;i<size;i++){
-            if(A[count]<B[i]){
-                int hold=A[count];
-                int hold2=B[i];
-                //append left
-                //move right
-                for(int j=i;j<size;j++){
-                    B[i]=hold;
-                    hold3=
-                    B[j+1]=hold2;
 
-                }
-            }
-
-            if(A[count]>=B[i]){
-                //append right
-                //move right
+        if(A[count+1]<B[count]){
+            int C[size-count];
+            for(int i=0;i<=count;i++){
+                C[i]=B[];
             }
         }
+        count++;
     }
 }
