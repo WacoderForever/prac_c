@@ -19,9 +19,6 @@ int main(){
                 b[i]=c[i-1];
             }
         }
-        if(a[count]>=b[count-1]){
-            b[count]=a[count];
-        }
         count++;
     }
 
