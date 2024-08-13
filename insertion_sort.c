@@ -2,7 +2,7 @@
 
 int main(){
 
-    int a[]={1,2,3,4,5,6,7};
+    int a[]={2,1,3,4,5,6,7};
     int size=sizeof(a)/4;
     int b[size];
     b[0]=a[0];
