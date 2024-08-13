@@ -1,15 +1,15 @@
 #include "allheaders.h"
 
 int main() {
-    long long int a[] = {27, 56, 12, 98, 45667, 6776};
+    int a[] = {67, 56, 12, 98, 27, 6776};
     int size = sizeof(a) / sizeof(a[0]);
-    long long int b[size];
+    int b[size];
     b[0] = a[0];
     int count = 1;
 
     while (count < size) {
         if (a[count] < b[0]) {
-            long long int c[count];
+            int c[count];
             for (int i = 0; i < count; i++) {
                 c[i] = b[i];
             }
@@ -24,7 +24,7 @@ int main() {
                 if (a[count] < b[i]) {
                     int csize = count - i;
                     int k = i;
-                    long long int c[csize];
+                    int c[csize];
                     for (int j = 0; j < csize; j++) {
                         c[j] = b[k];
                         k++;
@@ -42,7 +42,7 @@ int main() {
     }
 
     for (int i = 0; i < size; i++) {
-        printf("%lld, ", b[i]);
+        printf("%d, ", b[i]);
     }
     printf("\n");
 
