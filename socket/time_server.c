@@ -36,5 +36,22 @@
 #include <time.h>
 
 int main(){
+
+    #if defined(_WIN32)
+        WSADATA d;
+        if(WSAStartup(MAKEWORD(2,2),&d)){
+            fprintf(stderr,"Failed to initialise.\n");
+            return 1;
+        }
+
+    #endif
+    //local address for the server to bind to
+    printf("Configuring local address....\n");
+    struct addrinfo hints;
+    memset(&hints,0,sizeof(hints));
+    hints.ai_family=AF_INET;
+    hints.ai_socktype=SOCK_STREAM;
+    hints.ai_flag=AI_PASSIVE;
+
     
 }
