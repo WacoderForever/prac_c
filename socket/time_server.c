@@ -67,5 +67,10 @@ int main(){
     }
 
     //bind socket to the local address
-    
+    printf("Binding the socket to the local address.....\n");
+    if(bind(socket_listen,bind_address->ai_addr,bind_address->ai_addrlen)){
+        fprintf(stderr,"bind() failed. (%d)\n",GETSOCKETERRNO());
+        return 1;
+    }
+    freeaddrinfo(bind_address);
 }
