@@ -45,6 +45,7 @@ int main(){
         }
 
     #endif
+
     //local address for the server to bind to
     printf("Configuring local address....\n");
     struct addrinfo hints;
@@ -53,5 +54,7 @@ int main(){
     hints.ai_socktype=SOCK_STREAM;
     hints.ai_flag=AI_PASSIVE;
 
-    
+    struct addrinfo *bind_address;
+    getaddrinfo(NULL,"8080",&hint,&bind_address);
+
 }
