@@ -73,4 +73,11 @@ int main(){
         return 1;
     }
     freeaddrinfo(bind_address);
+
+    //making the socket to listen for connections
+    if((listen(socket_listen,10)<0)){
+        fprintf(stderr,"listen() failed. (%d). \n",GETSOCKETERRNO());
+        return 1;
+    }
+    
 }
