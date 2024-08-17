@@ -103,13 +103,13 @@ int main(){
         "Connection: close\r\n"
         "Content-Type: text/plain\r\n\r\n"
         "Local time: ";
-    int bytes_sent=send(socket_client,response,sizeof(response),0);
+    int bytes_sent=send(socket_client,response,strlen(response),0);
     printf("%d of %d sent\n",bytes_sent,(int)strlen(response));
 
     time_t timer;
     time(&timer);
     char *time_msg=ctime(&timer);
-    bytes_sent=send(socket_client,time_msg,sizeof(time_msg),0);
+    bytes_sent=send(socket_client,time_msg,strlen(time_msg),0);
     printf("%d of %d sent.\n",bytes_sent,(int)strlen(time_msg));
 
     //close sockets
