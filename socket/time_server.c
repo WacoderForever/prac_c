@@ -104,6 +104,15 @@ int main(){
     //printf("%.*s",bytes_read,request); //this is because there is no certainity that the request is 
     //null terminated
 
+    //sending response
+    printf("Sending response....\n");
+    const char *response=
+        "HTTP/1.1 200 OK\r\n"
+        "Connection: close\r\n"
+        "Content-Type: text/plain\r\n\r\n"
+        "Local time is: ";
+    int bytes_sent=send(socket_client,response,strlen(response),0);
+    printf("Sent %d of %d bytes\n",bytes_sent,(int)strlen(response));
 
-
+    
 }
