@@ -89,4 +89,7 @@ int main(){
         fprintf(stderr,"accept() failed. (%d).\n",GETSOCKETERRNO());
         return 1;
     }
+
+    //printing clients address info
+    
 }
