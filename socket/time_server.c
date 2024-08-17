@@ -91,5 +91,9 @@ int main(){
     }
 
     //printing clients address info
+    printf("Printing clients info....\n");
+    char addressbuffer[1000];
+    getnameinfo((struct sockaddr*) &client_address,client_len,addressbuffer,sizeof(addressbuffer),NI_NUMERICHOST);
+    printf("%s\n",addressbuffer);
     
 }
