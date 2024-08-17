@@ -92,9 +92,22 @@ int main(){
     printf("Receiving request...\n");
     char request[1024];
     int bytes_received=recv(socket_client,1024,0);
-    printf("%d\n",bytes_received);
+    printf("%d of %d received\n",bytes_received,(int)strlen(request));
 
     //response
     printf("Sending response.....\n");
+    char *response=
+        "HTTP/1.1 200 OK\r\n"
+        "Connection: close\r\n"
+        "Content-Type: text/plain\r\n\r\n"
+        "Local time: ";
+    int bytes_sent=send(socket_client,sizeof(response),0);
+    printf("%d of %d sent\n",bytes_sent,(int)strlen(response));
+
+    time_t timer;
+    time(&timer);
+    char *time_msg=ctime(&timer);
+    int bytes_sent=send(socket_client,sizeof(time_msg),0);
+    printf("%d of %d sent.\n",bytes_sent,(int)strlen(time_msg));
     
 }
