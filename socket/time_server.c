@@ -95,5 +95,15 @@ int main(){
     char addressbuffer[1000];
     getnameinfo((struct sockaddr*) &client_address,client_len,addressbuffer,sizeof(addressbuffer),NI_NUMERICHOST);
     printf("%s\n",addressbuffer);
-    
+
+    //reading requests
+    printf("Reading requests....\n");
+    char request[1024];
+    int bytes_received = recv(socket_client, request, 1024, 0);
+    printf("Received %d bytes.\n", bytes_received);
+    //printf("%.*s",bytes_read,request); //this is because there is no certainity that the request is 
+    //null terminated
+
+
+
 }
