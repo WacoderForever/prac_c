@@ -118,5 +118,17 @@ int main(){
     time(&timer);
     char *time_msg=ctime(&timer);
     bytes_sent=send(socket_client,time_msg,strlen(time_msg),0);
-    printf("Sent %d of %d bytes\n",bytes_sent,(int)strlen(time_msg));   
+    printf("Sent %d of %d bytes\n",bytes_sent,(int)strlen(time_msg));  
+
+    //closing the sockets
+    printf("Closing the client socket....\n");
+    CLOSESOCKET(socket_client);
+    printf("Closing listening socket....\n");
+    CLOSESOCKET(socket_listen);
+
+    #if defined(_WIN32)
+        WSACleanup()
+    #endif
+    printf("Finished\n");
+    return 0;
 }
