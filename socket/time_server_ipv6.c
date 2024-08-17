@@ -63,6 +63,7 @@ int main(){
         fprintf(stderr,"bind() failed.(%d)\n",GETSOCKETERRNO());
         return 1;
     }
+    freeaddrinfo(bind_address);
 
     //listening for connections
     printf("Listening for connections.......\n");
@@ -72,5 +73,19 @@ int main(){
     }
 
     //accept incoming connections
+    struct sockaddr_storage client_address;
+    socklen_t clientlen=sizeof(client_address);
+    SOCKET socket_client=accept(socket_listen,(struct sockaddr*) &client_address,&client_len);
+    if(!ISVALIDSOCKET(socket_client)){
+        fprintf(stderr,"accept() failed.(%d) \n",GETSOCKETERRNO());
+        return 1;
+    }
+
+    //printing clients info
+    printf("Printing clients info........\n");
+    char buffer[1000];
+    getnameinfo((struct sockaddr*) &client_address,buffer,sizeof(buffer),
+                0,0,NI_NUMERICHOST);
+    printf("%s\n",buffer);
     
 }
