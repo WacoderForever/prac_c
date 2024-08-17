@@ -52,10 +52,10 @@ int main(){
     memset(&hints,0,sizeof(hints));
     hints.ai_family=AF_INET;
     hints.ai_socktype=SOCK_STREAM;
-    hints.ai_flag=AI_PASSIVE;
+    hints.ai_flags=AI_PASSIVE;
 
     struct addrinfo *bind_address;
-    getaddrinfo(NULL,"8080",&hint,&bind_address);
+    getaddrinfo(NULL,"8080",&hints,&bind_address);
 
     //creating socket
     printf("Creating socket.....\n");
@@ -82,7 +82,7 @@ int main(){
 
     //accepting incoming connections
     printf("Waiting for connection.......\n");
-    struct sockadrr_storage client_address;
+    struct sockaddr_storage client_address;
     socklen_t client_len=sizeof(client_address);
     SOCKET socket_client=accept(socket_listen,(struct sockaddr*) &client_address,&client_len);
     if(!ISVALIDSOCKET(socket_client)){
@@ -93,7 +93,8 @@ int main(){
     //printing clients address info
     printf("Printing clients info....\n");
     char addressbuffer[1000];
-    getnameinfo((struct sockaddr*) &client_address,client_len,addressbuffer,sizeof(addressbuffer),NI_NUMERICHOST);
+    getnameinfo((struct sockaddr*) &client_address,client_len,addressbuffer,sizeof(addressbuffer),
+                0,0,NI_NUMERICHOST);
     printf("%s\n",addressbuffer);
 
     //reading requests
