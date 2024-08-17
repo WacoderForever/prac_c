@@ -87,5 +87,14 @@ int main(){
     getnameinfo((struct sockaddr*) &client_address,buffer,sizeof(buffer),
                 0,0,NI_NUMERICHOST);
     printf("%s\n",buffer);
+
+    //request
+    printf("Receiving request...\n");
+    char request[1024];
+    int bytes_received=recv(socket_client,1024,0);
+    printf("%d\n",bytes_received);
+
+    //response
+    printf("Sending response.....\n");
     
 }
