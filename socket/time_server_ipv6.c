@@ -70,5 +70,7 @@ int main(){
         fprintf(stderr,"listen() failed.(%d) \n",GETSOCKETERRNO());
         return 1;
     }
+
+    //accept incoming connections
     
 }
