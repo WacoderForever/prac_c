@@ -79,5 +79,14 @@ int main(){
         fprintf(stderr,"listen() failed. (%d). \n",GETSOCKETERRNO());
         return 1;
     }
-    
+
+    //accepting incoming connections
+    printf("Waiting for connection.......\n");
+    struct sockadrr_storage client_address;
+    socklen_t client_len=sizeof(client_address);
+    SOCKET socket_client=accept(socket_listen,(struct sockaddr*) &client_address,&client_len);
+    if(!ISVALIDSOCKET(socket_client)){
+        fprintf(stderr,"accept() failed. (%d).\n",GETSOCKETERRNO());
+        return 1;
+    }
 }
