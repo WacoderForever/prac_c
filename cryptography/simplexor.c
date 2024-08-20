@@ -1,4 +1,4 @@
-#include "allheaders.h"
+#include "/prac_c/allheaders.h"
 
 int main(int argc,char **argv){
     FILE *fi,*fo;
