@@ -13,15 +13,14 @@
 #include <arpa/inet.h>
 #include <errno.h>
 #include <unistd.h>
-#include <errno.h>
 #endif
 
 #if defined(_WIN32)
 #if !defined(IPV6_V6ONLY)
 #define IPV6_V6ONLY 27
 #endif
-#define GETSOCKETERRNO (WSAGetLastError()) 
-#define CLOSESOCKET (closesocket())
+#define GETSOCKETERRNO() (WSAGetLastError()) 
+#define CLOSESOCKET(s) (closesocket(s))
 #define ISVALIDSOCKET(s) ((s) != INVALID_SOCKET)
 #else
 #define GETSOCKETERRNO() (errno)
