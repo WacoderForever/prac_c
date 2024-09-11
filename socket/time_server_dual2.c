@@ -38,8 +38,8 @@
 int main(){
     #if defined(_WIN32)
         WSADATA d;
-        if(WSAStartup(MAKEWORD(2,2),&data)){
-            fprintf(srderr,"Failed to initialise.\n");
+        if(WSAStartup(MAKEWORD(2,2),&d)){
+            fprintf(stderr,"Failed to initialise.\n");
             return 1;
         }
     #endif
