@@ -17,11 +17,11 @@ int main(int argc,char **argv){
         return 1;
     }
 
-    printf("Configuring remote address....\n")
+    printf("Configuring remote address....\n");
     struct addrinfo hints;
     memset(&hints,0,sizeof(hints));
     hints.ai_socktype=SOCK_STREAM;
-    struct sockaddr *peer_address;
+    struct addrinfo *peer_address;
     if(getaddrinfo(argv[1],argv[2],&hints,&peer_address)){
         fprintf(stderr,"getaddrinfo() failed. (%d)",GETSOCKETERRNO());
         return 1;
@@ -55,9 +55,9 @@ int main(int argc,char **argv){
     while(1){
 
         fd_set reads;
-        FD_ZERO(reads);
+        FD_ZERO(&reads);
         FD_SET(socket_peer,&reads);     
-        #if defined(_WIN32)
+        #if !defined(_WIN32)
             FD_SET(0,&reads);
         #endif
         struct timeval timeout;
@@ -67,7 +67,33 @@ int main(int argc,char **argv){
             fprintf(stderr,"select() failed. (%d)\n",GETSOCKETERRNO());
             return 1;
         }
-        
+        if(FD_ISSET(socket_peer,&reads)){
+            char read[4096];
+            int bytes_received=recv(socket_peer,read,4096,0);
+            if(bytes_received <1){
+                printf("Connection closed by peer.\n");
+                break;
+            }
+            printf("Received %d bytes: %.*s\n",bytes_received,bytes_received,read);
+        }
 
+        #if defined(_WIN32)
+            if(_kbhit()){
+        #else
+            if(FD_ISSET(0,&reads)){
+        #endif
+        char read[4096];
+        if(!fgets(read,4096,stdin)) break;
+        printf("Sending: %s\n",read);
+        int bytes_sent=send(socket_peer,read,strlen(read),0);
+        printf("Sent %d bytes.\n", bytes_sent);
+        }
     }
+    printf("Closing socket...\n");
+    CLOSESOCKET(socket_peer);
+    #if defined(_WIN32)
+        WSACleanup();
+    #endif
+    printf("Finished.\n");
+    return 0;
 }

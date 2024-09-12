@@ -18,12 +18,13 @@
 #if defined(_WIN32)
 #if !defined(IPV6_V6ONLY)
 #define IPV6_V6ONLY 27
+#endif
 #define CLOSESOCKET(s) (closesocket(s))
 #define GETSOCKETERRORNO() (WSAGetLAstError())
 #define ISVALIDSOCKET(s) ((s) != INVALID_SOCKET)
 #else
 #define CLOSESOCKET(s) (close(s))
-#define GETSOCKETERRORNO (errno)
+#define GETSOCKETERRNO() (errno)
 #define ISVALIDSOCKET(s) (s>=0)
 #define SOCKET int
 #endif
