@@ -40,9 +40,13 @@ void printTree(struct Node *head){
     struct Node *temp=head;
     //printing using inorder trasversal
     while(temp !=NULL){
-        printf("valueL: %d\n",temp->leftNode->value);
-        printf("valueM: %d\n",temp->value);
-        printf("valueR: %d\n",temp->rightNode->value);
+        if((temp->leftNode) != NULL){
+            printf("valueL: %d\n",temp->leftNode->value);
+            printf("valueM: %d\n",temp->value);
+        }       
+        if((temp->rightNode) !=NULL){
+            printf("valueR: %d\n",temp->rightNode->value);
+        }
         printf("\n\n");
         temp=temp->rightNode;
     }
