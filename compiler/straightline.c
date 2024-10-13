@@ -8,7 +8,7 @@ struct A_stm_{
     enum {A_CompoundStm,A_AssignStm,A_PrintStm}kind;
     union{
         struct{A_stm stm1,stm2;}compound;
-        struct{string id;A_exp}assign;
+        struct{string id;A_exp;}assign;
         struct{A_expList exps;}print;
     }u;
 };
@@ -23,7 +23,7 @@ struct A_exp_{
         string id;
         int num;
         struct{A_exp leftExp;A_Binop oper;A_exp rightExp;}op;
-        struct{A_stm stm,A_exp exp}eseq;
+        struct{A_stm stm,A_exp exp;}eseq;
     }u;
 } 
 
