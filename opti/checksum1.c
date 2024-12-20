@@ -22,7 +22,7 @@ void main(int argc,char* argv[]){
     Checksum=0;
 
     while((Readlength=read(Handle,&Byte,sizeof(Byte)))>0){
-        Checksum += Readlength;
+        Checksum += (unsigned int)Byte;
     }
     printf("The checksum is %d\n",Checksum);
     exit(0);

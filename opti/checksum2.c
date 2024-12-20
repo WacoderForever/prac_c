@@ -1,31 +1,28 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <fcntl.h>
+#include <stdlib.h>
+#include <unistd.h>
 
-extern int Checksum(int Handle, unsigned int *Checksum);
+extern int Checksum(int Handle,unsigned int *checksum_value,unsigned char Byte);
 
-int main(int argc, char **argv) {
+void main(int argc,char **argv){
     int Handle;
-    unsigned int ChecksumVal;
-
-    if (argc != 2) {
-        printf("Usage: %s filename\n", argv[0]);
+    unsigned char Byte;
+    unsigned int Readlength;
+    unsigned int checksum_value=0;
+    if(argc != 2){
+        printf("Usage: ./a.out filename\n");
         exit(1);
     }
-
-    if ((Handle = open(argv[1], O_RDONLY)) == -1) {
-        perror("open");
+    if((Handle=open(argv[1],O_RDONLY)) == -1){
+        printf("Failed to open file.\n");
         exit(1);
     }
-
-    if (!Checksum(Handle, &ChecksumVal)) {
-        perror("Checksum");
+    if(Checksum(Handle,&checksum_value,Byte)==0){
+        printf("Failed to read file.\n");
         exit(1);
     }
-
-    printf("Checksum: %u\n", ChecksumVal);
     close(Handle);
-    return 0;
+    printf("Checksum: %d\n",checksum_value);
+    exit(0);
 }

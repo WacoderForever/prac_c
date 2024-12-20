@@ -2,6 +2,9 @@
 #ifndef _WIN32_WINNIT
 #define _WIN32_WINNIT 0x0600
 #endif
+#if !defined(IPV6_V6ONLY)
+#define IPV6_V6ONLY 27
+#endif
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #pragma comment(lib,"ws2_32.lib")
@@ -46,13 +49,19 @@ int main(){
     hints.ai_flags=AI_PASSIVE;
 
     struct addrinfo *bind_addr;
-    getaddrinfo(0,"8084",&hints,&bind_addr);
+    getaddrinfo(0,"8087",&hints,&bind_addr);
 
     //make socket
     printf("Creating socket....\n");
     SOCKET socket_listen=socket(bind_addr->ai_family,bind_addr->ai_socktype,bind_addr->ai_protocol);
     if(!ISVALIDSOCKET(socket_listen)){
         fprintf(stderr,"socket() failed.(%d)\n",GETSOCKETERRNO());
+        return 1;
+    }
+    //make socket dual by clearing thr IPV6_V6ONLY flag
+    const int option=0;
+    if((setsockopt(socket_listen,IPPROTO_IPV6,IPV6_V6ONLY,(void*)&option,sizeof(option))) < 0){
+        fprintf(stderr,"setsockopt() failed.(%d)\n",GETSOCKETERRNO());
         return 1;
     }
     //bind socket to the local address
@@ -81,7 +90,7 @@ int main(){
     printf("Client connected.....\n");
     char buffer[100];
     getnameinfo((struct sockaddr*)&client_addr,client_len,buffer,sizeof(buffer),0,0,NI_NUMERICHOST);
-    printf("%s",buffer);
+    printf("%s\n",buffer);
     //receive request from client
     printf("Receiving request....\n");
     char request[1024];
@@ -97,7 +106,7 @@ int main(){
         "HTTP 1.1 200 OK \r\n"
         "Connection: close \r\n"
         "Content-Type: text/plain \r\n\r\n"
-        "LOcal time is: ";
+        "Local time is: ";
     printf("Sending response...\n");
     int bytes_sent=send(socket_client,response,strlen(response),0);
     if(bytes_sent < 0){
