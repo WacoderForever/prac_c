@@ -1,9 +1,9 @@
-	.file	"trial1.c"
+	.file	"test1.c"
 	.intel_syntax noprefix
 	.text
 	.section	.rodata
 .LC0:
-	.string	"Hello world."
+	.string	"Hello World"
 	.text
 	.globl	main
 	.type	main, @function

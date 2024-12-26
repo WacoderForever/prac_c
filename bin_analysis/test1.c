@@ -1,9 +1,9 @@
 #include <stdio.h>
 
 #define FORMAT_STRING   "%s"
-#define MESSAGE         "Hello world.\n"
+#define MESSAGE         "Hello World\n"
 
-int main(int argc,char *argv[]){
+int main(int argc,char* argv[]){
     printf(FORMAT_STRING,MESSAGE);
     return 0;
 }
