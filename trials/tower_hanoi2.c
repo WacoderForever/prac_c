@@ -1,8 +1,10 @@
 #include <stdio.h>
 /*
+
 This is a variation of the towers of Hanoi whereby there 
 is no direct exchange between the source and destination pins
 i.e no movement from A to B and vice versa
+
 */
 void tower(int n,char a,char b,char c){
     if(n == 0) return;
