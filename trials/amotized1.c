@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int isEven(int num){return (num%2==0) ? 0 : 1;}
+int isEven(int num){return (num%2==0) ? 1 : 0;}
 
 typedef struct Node{
     struct Node *next;
@@ -16,20 +16,6 @@ Node* initNode(int num){
     new->prev=NULL;
 
     return new;
-}
-void addNode(Node **head,int num){
-    //if list is empty
-    if(*head==NULL){
-        *head=initNode(num);
-        return ;
-    }
-    Node *temp=*head;
-    while(temp->next != NULL){
-        temp=temp->next;
-    }
-    Node *new=initNode(num);
-    temp->next=new;
-    new->prev=temp;
 }
 
 void deleteNode(Node *head, int num){
@@ -74,6 +60,27 @@ void deleteNode(Node *head, int num){
     printf("Successfully deleted the node.\n");
 }
 
+void addNode(Node **head,int num){
+    //if list is empty
+    if(*head==NULL){
+        *head=initNode(num);
+        return ;
+    }
+    Node *temp=*head;
+    while(temp->next != NULL){
+        temp=temp->next;
+    }
+    Node *new=initNode(num);
+    if(isEven(num)){
+        while((!isEven(temp->num))&&(temp != NULL) && (temp->prev != NULL)){
+            temp =temp->prev;
+            deleteNode(temp->next,temp->next->num);
+        }
+    }
+    temp->next=new;
+    new->prev=temp;
+}
+
 void printList(Node *head){
     if(head==NULL){
         printf("Empty list.\n");
@@ -90,8 +97,10 @@ void printList(Node *head){
 int main(){
     Node *head=initNode(5);
     addNode(&head,7);
-    printList(head);
-    deleteNode(head,7);
+    addNode(&head,3);
+    addNode(&head,4);
+    addNode(&head,9);
+    addNode(&head,8);
     printList(head);
 
     return 0;
