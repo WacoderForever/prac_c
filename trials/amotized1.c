@@ -72,7 +72,12 @@ void addNode(Node **head,int num){
     }
     Node *new=initNode(num);
     if(isEven(num)){
-        while((!isEven(temp->num))&&(temp != NULL) && (temp->prev != NULL)){
+        while((!isEven(temp->num))&&(temp != NULL)){
+            if(temp->prev==NULL){
+                deleteNode(temp,temp->num);
+                *head=initNode(num);
+                return;
+            }
             temp =temp->prev;
             deleteNode(temp->next,temp->next->num);
         }
@@ -98,8 +103,10 @@ int main(){
     Node *head=initNode(5);
     addNode(&head,7);
     addNode(&head,3);
+    printList(head);
     addNode(&head,4);
     addNode(&head,9);
+    printList(head);
     addNode(&head,8);
     printList(head);
 
