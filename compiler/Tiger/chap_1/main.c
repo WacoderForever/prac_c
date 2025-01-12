@@ -18,7 +18,7 @@ int maxargs_exp(A_exp e) {
     case A_opExp:
       return maxargs_exp(e->u.op.left) + maxargs_exp(e->u.op.right);
     case A_eseqExp:
-      return maxargs(e->u.eseq.stm) + maxargs_exp(e->u.eseq.exp);
+      return maxargs(e->u.eseq.stm) + (int)maxargs_exp(e->u.eseq.exp);
   }
 }
 
