@@ -20,6 +20,7 @@ int maxargs_exp(A_exp e) {
     case A_eseqExp:
       return maxargs(e->u.eseq.stm) + (int)maxargs_exp(e->u.eseq.exp);
   }
+  return 0;
 }
 
 int maxargs_exp_list(A_expList el) {
@@ -38,6 +39,7 @@ int maxargs(A_stm s) {
     case A_printStm:
       return 1 + maxargs_exp_list(s->u.print.exps);
   }
+  return 0;
 }
 
 /**
@@ -99,6 +101,7 @@ Table_ interpStm(A_stm s,Table_ t){
     case A_printStm:
       return interPrintExpList(s->u.print.exps,t);
   }
+  return t;
 }
 
 struct IntAndTable interpExp(A_exp e,Table_ t){
@@ -124,6 +127,7 @@ struct IntAndTable interpExp(A_exp e,Table_ t){
     case A_eseqExp:
       return interpExp(e->u.eseq.exp,interpStm(e->u.eseq.stm,t));
   }
+  return interpExp(e,t);
 }
 
 Table_ update(Table_ t,string id,int value){
