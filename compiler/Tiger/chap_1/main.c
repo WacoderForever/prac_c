@@ -2,6 +2,7 @@
 #include "slp.h"
 #include "prog1.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 /**
  * 1. Write a function int maxargs(A_stm) that tells the maximum number of
@@ -64,7 +65,7 @@ int lookup(Table_ t,string id);
 
 struct IntAndTable{int i;Table_ t;};
 struct IntAndTable IntAndTable(int i,Table_ t){
-  struct IntAndTable it=malloc(sizeof(it));
+  struct IntAndTable it;
   it.i=i;
   it.t=t;
   return it;
@@ -78,12 +79,12 @@ void interp(A_stm s){
 
 Table_ interPrintExpList(A_expList el,Table_ t){
   if(el->kind==A_lastExpList){
-    struct IntAndTable it=interExp(el->u.last,t);
+    struct IntAndTable it=interpExp(el->u.last,t);
     printf("%d\n",it.i);
-    return it.t
+    return it.t;
   }
   else{
-    struct IntAndTable it=interExp(el->u.pair.head,t);
+    struct IntAndTable it=interpExp(el->u.pair.head,t);
     printf("%d\n",it.i);
     return interPrintExpList(el->u.pair.tail,it.t);
   }
@@ -94,21 +95,21 @@ Table_ interpStm(A_stm s,Table_ t){
     case A_compoundStm:
       return interpStm(s->u.compound.stm1,interpStm(s->u.compound.stm2,t));
     case A_assignStm:
-      return update(t,s->u.assign.id,interExp(s->u.assign.exp,t).i);
+      return update(t,s->u.assign.id,interpExp(s->u.assign.exp,t).i);
     case A_printStm:
       return interPrintExpList(s->u.print.exps,t);
   }
 }
 
-struct IntAndTable interExp(A_exp e,Table_ t){
+struct IntAndTable interpExp(A_exp e,Table_ t){
   switch(e->kind){
     case A_numExp:
       return IntAndTable(e->u.num,t);
     case A_idExp:
       return IntAndTable(lookup(t,e->u.id),t);
     case A_opExp:{
-      struct IntAndTable left=interExp(e->u.op.left,t);
-      struct IntAndTable right=interExp(e->u.op.right,left.t);
+      struct IntAndTable left=interpExp(e->u.op.left,t);
+      struct IntAndTable right=interpExp(e->u.op.right,left.t);
       switch(e->u.op.oper){
         case A_plus:
           return IntAndTable(left.i + right.i,right.t);
@@ -121,7 +122,7 @@ struct IntAndTable interExp(A_exp e,Table_ t){
       }
     }
     case A_eseqExp:
-      return interExp(interExp(e->u.eseq.exp,t),interpStm(e->u.eseq.stm,t));
+      return interpExp(e->u.eseq.exp,interpStm(e->u.eseq.stm,t));
   }
 }
 
@@ -135,4 +136,12 @@ int lookup(Table_ t,string id){
     if(t->id==id) return t->value;
     return lookup(t->tail,id);
   }
+}
+
+/**
+ * Main
+ */
+
+int main() {
+  interp(prog());
 }
