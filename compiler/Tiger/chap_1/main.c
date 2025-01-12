@@ -144,4 +144,5 @@ int lookup(Table_ t,string id){
 
 int main() {
   interp(prog());
+  return 0;
 }
