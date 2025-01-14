@@ -16,5 +16,5 @@ int main(int argc,char* argv[]){
         printf("%s\n",dirp->d_name);
     }
     closedir(dir);
-    return EXIT_SUCCESS;
+    exit(EXIT_SUCCESS);
 }
