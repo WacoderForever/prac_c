@@ -1,6 +1,7 @@
 #include "allheaders.h"
 
 int main(){
-    time_t larget=0x7fffffff;
-    printf("Biggest=%s\n",asctime(gmtime(&larget)));
+    time_t largest=0x7fffffff;
+    printf("Biggest=%s\n",asctime(gmtime(&largest)));
+    printf("Alert \a\n");
 }
