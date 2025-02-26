@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <error.h>
+#include <unistd.h>
+#include <sys/wait.h>
 
 #define DELIM " \t\r\a\n"
 #define MAX_ARGS 64
@@ -17,13 +19,13 @@ int parse_line(char *line,Command *cmd);
 int execute_command(Command *cmd);
 void free_cmd(Command *cmd);
 
-int main(){
+int main(int argc,char**argv){
     char *text=NULL;
     Command cmd;
     int status=1;
     while(status){
         printf("%% ");
-        text=read_line();
+        text=read_input();
         if(parse_line(text,&cmd)){
             status=execute_command(&cmd);
             (void)free_cmd(&cmd);
@@ -43,6 +45,8 @@ char *read_input(void){
             exit(0);
         }
         perror("read_input");
+        free(input);
+        exit(1);
     }
     return input;
 }
@@ -66,10 +70,16 @@ int parse_line(char *line,Command *cmd){
                 exit(1);
             }
         }
-        token=strtok(line,NULL);
+        token=strtok(NULL,DELIM);
     }
-    cmd->name=tokens[0];
+    tokens[position]=NULL;
+    if(position == 0){
+        free(tokens);
+        return 0;
+    }
+
     cmd->args=tokens;
+    cmd->name=tokens[0];
     cmd->num_args=position;
 
     return 1;
@@ -78,11 +88,17 @@ int parse_line(char *line,Command *cmd){
 int execute_command(Command *cmd){
     pid_t pid;
     pid=fork();
+    if(!strcmp(cmd->name,"exit")) return 0;
     if(pid < 0){
         fprintf(stderr,"fork() failed\n");
         exit(1);
     }
-    if (pid == 0) execvp(cmd->name,cmd->args);
+    if (pid == 0){
+        if(execvp(cmd->name,cmd->args)==-1){
+            perror("execvp failed\n");
+            exit(1);
+        }
+    }
     int status;
     do{
         waitpid(pid,&status,WUNTRACED);
