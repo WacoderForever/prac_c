@@ -15,9 +15,23 @@ typedef struct{
 char *read_input(void);
 int parse_line(char *line,Command *cmd);
 int execute_command(Command *cmd);
+void free_cmd(Command *cmd);
 
 int main(){
+    char *text=NULL;
+    Command cmd;
+    int status=1;
+    while(status){
+        printf("%% ");
+        text=read_line();
+        if(parse_line(text,&cmd)){
+            status=execute_command(&cmd);
+            (void)free_cmd(&cmd);
+        }
 
+    }
+    free(text);
+    return 0;
 }
 
 char *read_input(void){
@@ -63,5 +77,19 @@ int parse_line(char *line,Command *cmd){
 
 int execute_command(Command *cmd){
     pid_t pid;
-    
+    pid=fork();
+    if(pid < 0){
+        fprintf(stderr,"fork() failed\n");
+        exit(1);
+    }
+    if (pid == 0) execvp(cmd->name,cmd->args);
+    int status;
+    do{
+        waitpid(pid,&status,WUNTRACED);
+    }while(!WIFEXITED(status) && !WIFSIGNALED(status));
+    return 1;
+}
+
+void free_cmd(Command *cmd){
+    free(cmd->args);
 }
