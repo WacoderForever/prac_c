@@ -46,7 +46,7 @@ char *get_long_url(const char *short_url){
 
 CwebHttpResponse *handle_request(CwebHttpRequest *request){
     if(request->route=="/"){ //homepage
-        return cweb.response.send_file("public/html",CWEB_AUTO_SET_CONTENT,200);
+        return cweb.response.send_file("public/index.html",CWEB_AUTO_SET_CONTENT,200);
     }
 
     if((!strcmp(request->route,"/shorten"))){
@@ -56,7 +56,7 @@ CwebHttpResponse *handle_request(CwebHttpRequest *request){
         save_url(short_url,long_url);
 
         char response[128];
-        snprintf(response,sizeof(response),"Short URL: http://localhost:5000/%s",short_url);
+        snprintf(response,sizeof(response),"Short URL: http://localhost:5001/%s",short_url);
         return cweb.response.send_text(response,200);
     }
     char *long_url=get_long_url(request->route + 1); //gets the short code
@@ -75,6 +75,6 @@ CwebHttpResponse *handle_request(CwebHttpRequest *request){
 
 int main(){
     cweb =newCwebNamespace();
-    struct CwebServer server =newCwebSever(5000,handle_request);
+    struct CwebServer server =newCwebSever(5001,handle_request);
     cweb.server.start(&server);
 }
