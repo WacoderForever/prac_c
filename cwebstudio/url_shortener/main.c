@@ -45,29 +45,8 @@ char *get_long_url(const char *short_url){
 }
 
 CwebHttpResponse *handle_request(CwebHttpRequest *request){
-    if(request->route=="/"){ //homepage
+    if(!strcmp(request->route,"/")){ //homepage
         return cweb.response.send_file("public/index.html",CWEB_AUTO_SET_CONTENT,200);
-    }
-
-    if((!strcmp(request->route,"/shorten"))){
-        char *long_url = cweb.request.get_param(request,"url");
-        if(!long_url) return cweb.response.send_text("Missing parameter",400);
-        char *short_url = generate_short_url(long_url);
-        save_url(short_url,long_url);
-
-        char response[128];
-        snprintf(response,sizeof(response),"Short URL: http://localhost:5001/%s",short_url);
-        return cweb.response.send_text(response,200);
-    }
-    char *long_url=get_long_url(request->route + 1); //gets the short code
-    if(long_url){
-        char response_text[256];
-        snprintf(response_text, sizeof(response_text), 
-                 "Redirecting to <a href='%s'>%s</a>", long_url, long_url);
-
-        CwebHttpResponse *response = cweb.response.send_text(response_text, 301);
-        cweb.response.add_header(response, "Location", long_url); // Set redirect
-        return response;
     }
 
     return cweb.response.send_text("404-Not Found",404);
@@ -75,6 +54,6 @@ CwebHttpResponse *handle_request(CwebHttpRequest *request){
 
 int main(){
     cweb =newCwebNamespace();
-    struct CwebServer server =newCwebSever(5001,handle_request);
+    struct CwebServer server =newCwebSever(5002,handle_request);
     cweb.server.start(&server);
 }
