@@ -1,0 +1,7 @@
+First Path: a/b/c/d.txt
+Path: b/c/d.txt
+Path Changed: true
+Dir: b/c/
+Full Name: d.txt
+Name: d
+Extension: txt
