@@ -1,4 +1,5 @@
-#include "allheaders.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 void merge(int arr[], int left, int mid, int right) {
     int i, j, k;
