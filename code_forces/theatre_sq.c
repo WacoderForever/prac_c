@@ -12,7 +12,7 @@ unsigned long long Myceil(double in){
 int main(){
     unsigned long long n,m,a;
     unsigned long long num;
-     scanf("%lld %lld %lld", &n, &m, &a);
+    scanf("%lld %lld %lld", &n, &m, &a);
     if((n<1)||(n>1000000000)){
         printf("n out of range");
         return 1;
