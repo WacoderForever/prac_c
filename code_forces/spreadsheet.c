@@ -17,26 +17,30 @@ char *to_alph(char *rc){
     }
     int div=col/26;
     int rem=col%26;
-    char *alph_col;
+    char *alph_col=NULL;
     if(rem==0){
         div--;
         while(div > 0){
             div--;
-            char c='A'+div;
+            char *c='A'+div;
             strcat(alph_col,c);
         }
-        char c='Z';
+        char *c='Z';
         strcat(alph_col,c);
     }
     else{
         while(div > 0){
             div--;
-            char c='A'+div;
+            char *c='A'+div;
             srtcat(alph_col,c);
         }
-        char c='A'-1+rem;
-        strcat(alph_col,);
+        char *c='A'-1+rem;
+        strcat(alph_col,s);
     }
+    char *row_char=(char*)malloc(strlen(row)*sizeof(char));
+    sprintf(row_char,"%d",row);
+    strcat(alph_col,row_char);
+    return alph_col;
 }
 
 int main(){
