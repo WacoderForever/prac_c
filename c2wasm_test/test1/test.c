@@ -1,4 +1,4 @@
-#include "c2wasm.c"
+#include "../c2wasm.c"
 #include <stdio.h>
 
 long set_div_value() {
