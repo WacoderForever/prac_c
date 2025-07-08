@@ -34,6 +34,8 @@ int main(int argc,char**argv){
     getnameinfo(peer_address->ai_addr,peer_address->ai_addrlen,
                 address,(socklen_t)sizeof(address),
                 service,(socklen_t)sizeof(service),NI_NUMERICHOST);
+    printf("Address: %s\n",address);
+    printf("Service: %s\n",service);
 
     printf("Creating socket.....\n");
     SOCKET socket_peer;
@@ -45,7 +47,7 @@ int main(int argc,char**argv){
 
     printf("Connecting to remote server....\n");
     if(connect(socket_peer,peer_address->ai_addr,peer_address->ai_addrlen)){
-        fprintf(stderr,"connect() failed.(%d)",GETSOCKETERRNO());
+        fprintf(stderr,"connect() failed.(%d)\n",GETSOCKETERRNO());
         return 1;
     }
     freeaddrinfo(peer_address);

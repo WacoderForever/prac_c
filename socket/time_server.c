@@ -10,7 +10,6 @@
 #define ISVALIDSOCKET(s) ((s) != INVALID_SOCKET)
 #define GETSOCKETERRNO() WSAGetLastError()
 #define CLOSESOCKET(s) closesocket(s)
-
 #else
 #include <sys/types.h>
 #include <sys/socket.h>

@@ -17,7 +17,7 @@ int main(){
         return 1;
     }
     #endif
-    printf("Socket API initialised successfully");
+    printf("Socket API initialised successfully\n");
 
     struct addrinfo hints;
     memset(&hints,0,sizeof(hints));
@@ -37,7 +37,7 @@ int main(){
 
     int option=0;
     if((setsockopt(socket_listen,IPPROTO_IPV6,IPV6_V6ONLY,
-                    (const void *)option,(socklen_t)sizeof(option)))<1){
+                    (void *)&option,(socklen_t)sizeof(option)))<0){
         fprintf(stderr,"setsockopt() failed. (%d)\n",GETSOCKETERRNO());
         return 1;
     }
@@ -71,9 +71,46 @@ int main(){
         for(i=1;i<=max_socket;i++){
             if(FD_ISSET(i,&reads)){
                 if(i==socket_listen){
-                    
+                    struct sockaddr_storage client_addr;
+                    socklen_t client_len = sizeof(client_addr);
+                    SOCKET socket_client = accept(socket_listen,
+                                            (struct sockaddr *)&client_addr,&client_len);
+                    if(!ISVALIDSOCKET(socket_client)){
+                        fprintf(stderr,"accept() failed.(%d)\n",GETSOCKETERRNO());
+                        return 1;
+                    }
+                    FD_SET(socket_client,&master);
+                    if(socket_client > max_socket) max_socket = socket_client;
+
+                    char address_buffer[100];
+                    char service_buffer[100];
+                    getnameinfo((struct sockaddr*)&client_addr,client_len,
+                                address_buffer,(socklen_t)sizeof(address_buffer),
+                                service_buffer,(socklen_t)sizeof(service_buffer),NI_NUMERICHOST);
+                    printf("New connection from %s\n",address_buffer);              
+                }
+                else{
+                    char read[1024];
+                    int bytes_received=recv(i,read,1024,0);
+                    if(bytes_received < 1){
+                        FD_CLR(i,&master);
+                        CLOSESOCKET(i);
+                        continue;
+                    }
+                    for(int j=0;j<bytes_received;j++) read[j]=toupper(read[j]);
+                    send(i,read,bytes_received,0);
                 }
             }
         }
     }
+
+    printf("Closing listening socket....\n");
+    CLOSESOCKET(socket_listen);
+
+    #if defined(_WIN32)
+        WSACleanup()
+    #endif
+
+    printf("Finished\n");
+    return 0;
 }
