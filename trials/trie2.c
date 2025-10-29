@@ -11,40 +11,40 @@ struct trie_node{
 
 typedef struct trie_node trie_node_t;
 
-trie_node_t *trie_create_node(void){
+trie_node_t *trie_create_node(){
     trie_node_t *node = (trie_node_t*) malloc(sizeof(trie_node_t));
     if(node != NULL){
         node->is_end_of_word = false;
-        for(int i=0;i<ALPHABET_SIZE;i++) node->children[i]=NULL;
+        for(int i=0;i<ALPHABET_SIZE;i++) node->children[i] = NULL;
     }
+
     return node;
 }
 
-void trie_insert(trie_node_t *root,const char *word){
+void trie_insert(trie_node_t *root, const char *word){
     trie_node_t *crawler = root;
     for(int level=0;word[level] != '\0';level++){
-        int index = word[level]-'a';
-        if(crawler->children[index] == NULL){
-            crawler->children[index] = trie_create_node();
-        } 
+        int index = word[level] - 'a';
+        if(crawler->children[index] == NULL) crawler->children[index] = trie_create_node();
         crawler = crawler->children[index];
-    } 
-    crawler->is_end_of_word=true;  
+    }
+    crawler->is_end_of_word = true;
 }
 
-bool trie_search(trie_node_t *root,const char *word){
+bool trie_search(trie_node_t *root, const char *word){
     trie_node_t *crawler = root;
-    for(int level=0;word[level] != '\0';level++){
-        int index = word[level]-'a';
+    for(int i=0;word[i] != '\0';i++){
+        int index = word[i] - 'a';
         if(crawler->children[index] == NULL) return false;
         crawler = crawler->children[index];
     }
+
     return ((crawler != NULL) && (crawler->is_end_of_word));
 }
 
-bool trie_is_empty(trie_node_t *root){
+bool trie_is_empty(trie_node_t *node){
     for(int i=0;i<ALPHABET_SIZE;i++){
-        if(root->children[i] != NULL) return false;
+        if(node->children[i] != NULL) return false;
     }
     return true;
 }
@@ -89,7 +89,9 @@ int main (void){
   printf ("\nAfter deleting 'world':\n");
   printf ("world: %s\n", trie_search (root, "world") ? "Found" : "Not Found");
 
-  // TODO: Cleanup: Implement a function to free all allocated memory
-
+  for(int i=0;i<ALPHABET_SIZE;i++){
+    free(root->children[i]);
+  }
+  free(root);
   return 0;
 }
