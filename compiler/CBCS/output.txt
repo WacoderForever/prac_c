@@ -1,15 +1,22 @@
-Line no.	 Token no.	 Token	 Lexeme
+Line no.	 Token no.	 Token			 Lexeme
 
-      0	      0	 Identifier	 include
-      0	      1	 Identifier	   stdio
-      0	      2	 Identifier	       h
-      1	      3	 Identifier	    void
-      1	      4	 Keyword	    main
-      1	      5	 Special Symbol	       )
-      2	      6	 Special Symbol	       {
-      3	      7	 Identifier	  printf
-      3	      8	 Identifier	   Hello
-      3	      9	 Identifier	   World
-      3	     10	 Special Symbol	       )
-      3	     11	 Special Symbol	       ;
-      4	     12	 Special Symbol	       }
+      1	      1	 Preprocessor Directive			 #include<stdio.h>
+      2	      2	 Preprocessor Directive			 #include <stdlib.h>
+      3	      3	 Preprocessor Directive			 #define MAX 100
+      4	      4	 Keyword			    void
+      4	      5	 Keyword			    main
+      4	      6	 Special character			       (
+      4	      7	 Special character			       )
+      5	      8	 Special character			       {
+      6	      9	 Keyword			  printf
+      6	     10	 Special character			       (
+      6	     11	 Special character			       "
+      6	     12	 Identifier			   Hello
+      6	     13	 Identifier			   World
+      6	     14	 Special character			       "
+      6	     15	 Special character			       )
+      6	     16	 Special character			       ;
+      7	     17	 Keyword			  return
+      7	     18	 Digit			       0
+      7	     19	 Special character			       ;
+      8	     20	 Special character			       }

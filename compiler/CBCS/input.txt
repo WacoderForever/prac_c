@@ -1,5 +1,8 @@
 #include<stdio.h>
+#include <stdlib.h>
+#define MAX 100
 void main()
 {
 printf("Hello World");
+return 0;
 }
