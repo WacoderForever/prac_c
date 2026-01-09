@@ -17,6 +17,10 @@ Line no.	 Token no.	 Token			 Lexeme
       6	     15	 Special character			       )
       6	     16	 Special character			       ;
       7	     17	 Keyword			  return
-      7	     18	 Digit			       0
-      7	     19	 Special character			       ;
-      8	     20	 Special character			       }
+      7	     18	 Digit			       4
+      7	     19	 Digit			       5
+      7	     20	 Digit			       6
+      7	     21	 Digit			       7
+      7	     22	 Digit			       8
+      7	     23	 Special character			       ;
+      8	     24	 Special character			       }
